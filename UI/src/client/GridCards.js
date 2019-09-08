@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 const reinitialize_lag_ms = 60000
 const io = require('socket.io-client');
 
-const socket = io('http://localhost:8080',
+const socket = io('http://192.168.56.11:8080',
                   { reconnection: true,
                     reconnectionDelay: 1000,
                     reconnectionDelayMax : 5000,
