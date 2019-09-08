@@ -12,9 +12,7 @@
     "server": "cd server && npm start",
     "start": "concurrently --kill-others --success last 'npm run server' 'npm run client'"
   },
-  "dependencies": {
-    "nodemon": "^1.19.2"
-  },
+  "dependencies": {},
   "keywords": [],
   "author": "",
   "license": "MIT",
