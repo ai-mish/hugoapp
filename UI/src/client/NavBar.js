@@ -11,7 +11,7 @@ const NavBar = () => {
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="title" color="inherit">
-                  SAS Computer Vision Demo v1.0
+                  Hugo App v1.0
                 </Typography>
             </Toolbar>
         </AppBar>
