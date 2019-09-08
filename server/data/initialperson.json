@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "profilepicture": "/img/avataaars.png",
+    "name": "Felix",
+    "title": "Manager",
+    "recommendation":"Say hello!",
+    "default_recommendation": "empty"
+  },
+  {
+    "id": 2,
+    "profilepicture": "/img/Ray_avatar.png",
+    "name": "Human face",
+    "title": "Lead",
+    "recommendation": "Say hi!",
+    "default_recommendation": "empty"
+  },
+  {
+    "id": 3,
+    "profilepicture": "/img/avataaars-3.png",
+    "name": "Flower",
+    "title": "Testing",
+    "recommendation":"See you again!",
+    "default_recommendation": "empty"
+  },
+  {
+    "id": 4,
+    "profilepicture": "/img/avataaars-4.png",
+    "name": "Person",
+    "title": "Testing2",
+    "recommendation":"See you again!",
+    "default_recommendation": "empty"
+  }
+]
