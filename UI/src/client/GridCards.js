@@ -176,7 +176,7 @@ export default function GridCards() {
   useEffect(() => {
     //console.log("get initial data")
     // Run! Get some initial data from API.
-    fetch('http://localhost:8080/customer/initial')
+    fetch('http://192.168.56.11:8080/customer/initial')
       .then(response => response.json())
       .then(function(jsondata) {
         //console.log(jsondata);
