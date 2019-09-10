@@ -10,7 +10,7 @@ const NavBar = () => {
         <div>
         <AppBar position="static">
             <Toolbar>
-                <Typography variant="title" color="inherit">
+                <Typography variant="h6" color="inherit">
                   Hugo App v1.0
                 </Typography>
             </Toolbar>

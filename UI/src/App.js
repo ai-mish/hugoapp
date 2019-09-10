@@ -1,7 +1,7 @@
 import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import NavBar from './client/NavBar'
-import GridCards from './client/GridCards'
+import MainPage from './client/MainPage'
 
 const theme = createMuiTheme({
   palette: {
@@ -24,7 +24,7 @@ function App() {
     <div>
       <MuiThemeProvider theme={theme}>
           <NavBar/>
-          <GridCards/>
+          <MainPage/>
       </MuiThemeProvider>
     </div>
   );

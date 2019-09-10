@@ -1,19 +1,14 @@
-import React, { Component, Fragment, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/DeleteSharp';
-import CloseIcon from '@material-ui/icons/Close';
-import { amber, green } from '@material-ui/core/colors';
+
 import IconButton from '@material-ui/core/IconButton';
 import WarningIcon from '@material-ui/icons/Warning';
 
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import { useSnackbar } from 'notistack';
 
 
@@ -70,14 +65,7 @@ const HealthNotifications = props => {
 
     const classes = useStyles();
     const FETCH_TIMEOUT = 2000 //ms
-    let api_snackbar_key = null
-    let esp_snackbar_key = null
-    const Icon = variantIcon["info"];
 
-    function onClose(key){
-      console.log('onclose');
-      closeSnackbar(key);
-    }
     //onClick={onClose(key)}
     function action(key) {
       //console.log(key)
@@ -109,14 +97,14 @@ const HealthNotifications = props => {
     function checkAPIHealth() {
 
       timeoutPromise(FETCH_TIMEOUT, fetch(OBJ_DET_SERVER_URL+'/customer/initial')).then(function(response) {
-        api_snackbar_key = enqueueSnackbar('API is online',
+        enqueueSnackbar('API is online',
                                           { variant: 'success',
                                             autoHideDuration:1000,
                                             persist: false,
                                             action
                                           });
       }).catch(function(error) {
-        api_snackbar_key = enqueueSnackbar('API is offline',
+        enqueueSnackbar('API is offline',
                                           { variant: 'error',
                                             persist: true,
                                             action
@@ -129,20 +117,20 @@ const HealthNotifications = props => {
       .then(response => response.json())
       .then(function(response) {
         if(response['esphealth'].toUpperCase === 'UP'){
-          esp_snackbar_key = enqueueSnackbar('ESP is online',
+          enqueueSnackbar('ESP is online',
                                             { variant: 'success',
                                               persist: false,
                                               action
                                             });
         } else{
-          esp_snackbar_key = enqueueSnackbar('ESP is offline',
+          enqueueSnackbar('ESP is offline',
                                             { variant: 'error',
                                               persist: true,
                                               action
                                             });
         }
       }).catch(function(error) {
-          esp_snackbar_key = enqueueSnackbar('ESP is offline',
+          enqueueSnackbar('ESP is offline',
                                             { variant: 'error',
                                               persist: true,
                                               action

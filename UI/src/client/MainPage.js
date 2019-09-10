@@ -15,7 +15,8 @@ import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 //import initializeData from '../data/initializeData';
-import ServerStatus from './ServerStatus';
+import APIStatus from './APIStatus';
+import ErrorPage from './ErrorPage';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const reinitialize_lag_ms = 60000
+//const reinitialize_lag_ms = 60000
 const TICK_COUNT=30
 const io = require('socket.io-client');
 let OBJ_DET_SERVER_URL = 'http://localhost:8080';
@@ -85,34 +86,25 @@ const default_data = {  status: 'Not detected',
 
 
 
-export default function GridCards() {
+export default function MainPage() {
   const classes = useStyles();
-  const [count, setCount] = useState(0);
-  //const resetData = initializeData.slice()
   const [source, setSource] = useState({});
-  const [customers, setCustomers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState({'value':'', status:'info'});
-  const [target, setTarget] = useState({"data":[],"latest_update_time": 0,"previous_update_time": 0});
+  const [hasError, setHasError] = useState(false);
   const [clientData, setClientData] = useState({"data":[],"latest_update_time": 0,"previous_update_time": 0});
-  var refresh = false;
 
 
   useEffect(() => {
 
     function refreshCards() {
         let newDataRecvd = false;
-        let currentDate = new Date();
         let previous_data_recv_time = 0
+        //get latest_data_recv_time
+        let latest_data_recv_time = clientData["latest_data_recv_time"];
 
         //add new property
         if(!clientData.hasOwnProperty('previous_data_recv_time')){
           clientData["previous_update_time"] = clientData["latest_data_recv_time"];
         }
-
-        //get latest_data_recv_time
-        let latest_data_recv_time = clientData["latest_data_recv_time"];
 
         if(latest_data_recv_time > previous_data_recv_time){
           //console.log("New data received")
@@ -192,23 +184,18 @@ export default function GridCards() {
 
 
   useEffect(() => {
-    //console.log("get initial data")
+    console.log("get initial data")
     // Run! Get some initial data from API.
-    console.log(OBJ_DET_SERVER_URL+'/customer/initial')
+    //console.log(OBJ_DET_SERVER_URL+'/customer/initial')
     fetch(OBJ_DET_SERVER_URL+'/customer/initial')
       .then(response => response.json())
       .then(function(jsondata) {
         console.log(jsondata);
+        setHasError(false)
         setClientData({...clientData, "data": jsondata});
-        //setOpen(true);
-        //setMessage({'value':'Connected to API','status': 'success','autoHideDuration':200});
-        //setClientData({...clientData});
       })
       .catch(function(error) {
-        //setOpen(true)
-        //setMessage({'value':'Unable to connect to API','status': 'error','autoHideDuration':6000});
-        //setOpen(false);
-        //console.log('Request failed ----------', error)
+        setHasError(true)
       });
   }, []);
 
@@ -255,60 +242,72 @@ export default function GridCards() {
   }, [source]); //only re-run the effect if new message comes in
 
 
+  function cardContent(){
+    return(
+      <React.Fragment>
+      {clientData["data"].map(tile => (
+        <Grid item>
+        <Card className={classes.card} >
+            <CardHeader
+               className={classes.cardheader}
+               avatar={
+                 <Avatar aria-label="recipe" className={classes.avatar}>
+                   {tile.name ? tile.name.charAt(0).toUpperCase() : 'N'}
+                 </Avatar>
+               }
+               action={
+                 <IconButton aria-label="settings">
+                   <MoreVertIcon />
+                 </IconButton>
+               }
+               title="Last Detected"
+               subheader={tile.latest_detect_time}
+             />
+            <CardActionArea style={{backgroundColor: tile.last_statusColor}}>
+              <CardMedia
+                wide
+                className={classes.media}
+                image={tile.profilepicture}
+                title="Demo image"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {tile.name} - {tile.title}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p" className={classes.cardcontent}>
+                  {tile.last_recommendation}
+                </Typography>
+              </CardContent>
+          </CardActionArea>
+          <CardActions className={classes.cardactions}>
+            <Button size="small" color="primary">
+              {tile.last_status}
+            </Button>
+            <Button size="small" color="primary">
+              Learn More
+            </Button>
+          </CardActions>
+        </Card>
+        </Grid>
+    ))}
+    </React.Fragment>
+    )
+  }
+
+
+
   return (
     <div className={classes.root}>
-      <ServerStatus/>
-      <Paper className={classes.paper}>
-        <Grid container spacing={2} justify="center" >
-          {clientData["data"].map(tile => (
-            <React.Fragment>
-            <Grid item>
-            <Card className={classes.card} >
-                <CardHeader
-                   className={classes.cardheader}
-                   avatar={
-                     <Avatar aria-label="recipe" className={classes.avatar}>
-                       {tile.name ? tile.name.charAt(0).toUpperCase() : 'N'}
-                     </Avatar>
-                   }
-                   action={
-                     <IconButton aria-label="settings">
-                       <MoreVertIcon />
-                     </IconButton>
-                   }
-                   title="Last Detected"
-                   subheader={tile.latest_detect_time}
-                 />
-                <CardActionArea style={{backgroundColor: tile.last_statusColor}}>
-                  <CardMedia
-                    wide
-                    className={classes.media}
-                    image={tile.profilepicture}
-                    title="Demo image"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {tile.name} - {tile.title}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.cardcontent}>
-                      {tile.last_recommendation}
-                    </Typography>
-                  </CardContent>
-              </CardActionArea>
-              <CardActions className={classes.cardactions}>
-                <Button size="small" color="primary">
-                  {tile.last_status}
-                </Button>
-                <Button size="small" color="primary">
-                  Learn More
-                </Button>
-              </CardActions>
-            </Card>
-            </Grid>
-          </React.Fragment>
-        ))}
-        </Grid>
-      </Paper>
+      <APIStatus/>
+      {
+        hasError
+        ? (<ErrorPage/>)
+        : (<Paper className={classes.paper}>
+                    <Grid container spacing={2} justify="center" >
+                      {cardContent}
+                    </Grid>
+            </Paper>)
+      }
     </div>
   );
 }
