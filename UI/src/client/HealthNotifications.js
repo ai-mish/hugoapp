@@ -14,8 +14,8 @@ import { useSnackbar } from 'notistack';
 
 let OBJ_DET_SERVER_URL = 'http://localhost:8080';
 
-if (process.env.REACT_APP_OBJ_DET_SERVER_URL !== "") {
-  OBJ_DET_SERVER_URL=process.env.REACT_APP_OBJ_DET_SERVER_URL
+if (process.env.REACT_APP_API_SERVER_URL !== "") {
+  OBJ_DET_SERVER_URL=process.env.REACT_APP_API_SERVER_URL
 } else{
   OBJ_DET_SERVER_URL='http://localhost:8080'
 }
