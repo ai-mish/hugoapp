@@ -14,7 +14,8 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import initializeData from '../data/initializeData';
+//import initializeData from '../data/initializeData';
+import ServerStatus from './ServerStatus';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,12 +53,23 @@ const useStyles = makeStyles(theme => ({
   cardheader: {
     height: 20,
   },
+  snackbarcontent: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const reinitialize_lag_ms = 60000
+const TICK_COUNT=30
 const io = require('socket.io-client');
+let OBJ_DET_SERVER_URL = 'http://localhost:8080';
 
-const socket = io('http://192.168.56.11:8080',
+if (process.env.REACT_APP_OBJ_DET_SERVER_URL !== "") {
+  OBJ_DET_SERVER_URL=process.env.REACT_APP_OBJ_DET_SERVER_URL
+} else{
+  OBJ_DET_SERVER_URL='http://localhost:8080'
+}
+
+const socket = io(OBJ_DET_SERVER_URL,
                   { reconnection: true,
                     reconnectionDelay: 1000,
                     reconnectionDelayMax : 5000,
@@ -71,15 +83,21 @@ const default_data = {  status: 'Not detected',
                         statusColor: '#F5F5F5',
                       }
 
+
+
 export default function GridCards() {
   const classes = useStyles();
   const [count, setCount] = useState(0);
-  const resetData = initializeData.slice()
+  //const resetData = initializeData.slice()
   const [source, setSource] = useState({});
   const [customers, setCustomers] = useState([]);
-  const [target, setTarget] = useState({"data":initializeData,"latest_update_time": 0,"previous_update_time": 0});
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState({'value':'', status:'info'});
+  const [target, setTarget] = useState({"data":[],"latest_update_time": 0,"previous_update_time": 0});
   const [clientData, setClientData] = useState({"data":[],"latest_update_time": 0,"previous_update_time": 0});
   var refresh = false;
+
 
   useEffect(() => {
 
@@ -119,7 +137,7 @@ export default function GridCards() {
               }
 
               // Check Tick count expired
-              if(item["tickCount"] > 30 ){
+              if(item["tickCount"] > TICK_COUNT ){
                 item["tickCount"] = 0;
 
                 // Reset as tick expired
@@ -157,7 +175,7 @@ export default function GridCards() {
         setSource(payload)
       });
       socket.on('disconnect', function() {
-        setClientData({"data":initializeData})
+        setClientData({"data":[]})
         //console.log('Got disconnect!');
       });
       return () => {
@@ -176,14 +194,21 @@ export default function GridCards() {
   useEffect(() => {
     //console.log("get initial data")
     // Run! Get some initial data from API.
-    fetch('http://192.168.56.11:8080/customer/initial')
+    console.log(OBJ_DET_SERVER_URL+'/customer/initial')
+    fetch(OBJ_DET_SERVER_URL+'/customer/initial')
       .then(response => response.json())
       .then(function(jsondata) {
-        //console.log(jsondata);
+        console.log(jsondata);
         setClientData({...clientData, "data": jsondata});
+        //setOpen(true);
+        //setMessage({'value':'Connected to API','status': 'success','autoHideDuration':200});
+        //setClientData({...clientData});
       })
       .catch(function(error) {
-        console.log('Request failed', error)
+        //setOpen(true)
+        //setMessage({'value':'Unable to connect to API','status': 'error','autoHideDuration':6000});
+        //setOpen(false);
+        //console.log('Request failed ----------', error)
       });
   }, []);
 
@@ -191,7 +216,7 @@ export default function GridCards() {
 
   useEffect(() => {
     // data received from socket
-    console.log(source)
+    //console.log(source)
     var serverData = [source]
     var newdata = []
     // get current time
@@ -232,6 +257,7 @@ export default function GridCards() {
 
   return (
     <div className={classes.root}>
+      <ServerStatus/>
       <Paper className={classes.paper}>
         <Grid container spacing={2} justify="center" >
           {clientData["data"].map(tile => (

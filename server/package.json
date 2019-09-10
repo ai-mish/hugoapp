@@ -4,11 +4,11 @@
   "description": "sequelize-cli",
   "main": "server.js",
   "bin": {
-    "decisionengine": "www.js"
+    "decisionengine": "www"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./bin/www.js"
+    "start": "nodemon ./bin/www"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "node-fetch": "^2.6.0",
+    "nodemon": "^1.19.2",
     "sequelize": "^5.18.1",
     "sequelize-cli": "^5.5.1",
     "serve": "^11.1.0",
@@ -23,7 +24,7 @@
     "socket.io-client": "^2.2.0",
     "sqlite3": "^4.1.0",
     "uuidv4": "^5.0.1",
-    "ws": "^7.1.2",
-    "nodemon": "^1.19.2"
+    "websocket": "^1.0.29",
+    "ws": "^7.1.2"
   }
 }

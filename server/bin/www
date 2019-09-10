@@ -15,6 +15,7 @@ var models = require("../models");
 
 // routes
 let customer = require('../routes/customer');
+let esp = require('../routes/esp');
 
 //Sync Database
 models.sequelize
@@ -58,6 +59,7 @@ app.use(function(req, res, next) {
 });
 // register routes
 app.use('/customer', customer);
+app.use('/esp', esp);
 
 // index path
 app.get('/', function(req, res){
@@ -74,7 +76,7 @@ server.listen(port, function(){
 //enable socket
 io.on('connection', (socket) => {
   let esp = require('../sasesp/socket.js');
-  esp(io,socket);
+  esp.start(io,socket);
 });
 
 

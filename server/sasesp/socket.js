@@ -1,9 +1,11 @@
-const s_client = require('socket.io-client');
 const WebSocket = require('ws');
 const fs = require('fs')
 var Customers = require('../models').Customers;
 
+let esp_url = 'ws://192.168.56.201:30001/SASESP/subscribers/detectionProject/contquery/w_score/?format=json&mode=streaming&pagesize=5&schema=true'
 let sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+let consumer_esp = null
 
 function isJson(str) {
     try {
@@ -14,25 +16,9 @@ function isJson(str) {
     return true;
 }
 
-function test() {
-  Customers.count().then(c => {
-    console.log("There are " + c + " customers!")
-  })
-  Customers
-  .findOne({
-    //where: {name: detection["_Object"+i+"_"]},
-    where: {name: "Felix"},
-    attributes: ['recommendation']
-  })
-  .then(customer => {
-    // customer will be the first entry of the Customers table with the name || null
-    //sconsole.log(customer)
-    customer ? recommendation = customer.get('recommendation') : recommendation = '' ;
-    console.log(recommendation);
-  })
-}
 
-let esp = function(io,socket) {
+
+let start = function(io,socket) {
   console.log('Socket succesfully connected with id: '+socket.id);
   var count=0
 
@@ -40,15 +26,14 @@ let esp = function(io,socket) {
   //io.sockets.emit('broadcast',test);
   //test();
 
-
-   const consumer_esp = new WebSocket('ws://192.168.56.201:30001/SASESP/subscribers/detectionProject/contquery/w_score/?format=json&mode=streaming&pagesize=5&schema=true');
+   consumer_esp = new WebSocket(esp_url);
 
    consumer_esp.onerror = function(event) {
-     console.log(event)
+     console.log('Failed to connect to SAS ESP')
    }
 
    consumer_esp.onconnect = function(event) {
-     console.log(event)
+     console.log('Successfully connected to SAS ESP')
    }
 
     consumer_esp.onopen = function(event) {
@@ -134,4 +119,4 @@ let esp = function(io,socket) {
   });
 };
 
-module.exports = esp
+module.exports = {start}
