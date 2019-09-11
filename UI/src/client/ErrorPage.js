@@ -12,6 +12,9 @@ const useStyles = makeStyles(theme => ({
     margin: 'auto',
     maxWidth: 800,
   },
+  h5: {
+    margin: 'auto'
+  },
 }));
 
 export default function ErrorPage() {
@@ -19,10 +22,7 @@ export default function ErrorPage() {
 
   return (
     <div>
-        <Typography variant="h5" component="h3">
-          Oops...
-        </Typography>
-        <Typography component="p">
+        <Typography color="inherit" align="center" variant="h5" className={classes.h5}>
           Looks like API server is offline..
         </Typography>
     </div>

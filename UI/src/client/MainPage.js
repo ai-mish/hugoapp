@@ -35,6 +35,8 @@ const useStyles = makeStyles(theme => ({
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
+      overflow: 'hidden',
+      flexGrow: 1,
       [theme.breakpoints.up('sm')]: {
         height: '80vh',
         minHeight: 750,
@@ -42,7 +44,7 @@ const useStyles = makeStyles(theme => ({
       },
     },
     paper: {
-      padding: theme.spacing(3,2),
+      padding: theme.spacing(1),
       margin: 'auto',
       maxWidth: 800,
       backgroundColor: theme.palette.background.root,
