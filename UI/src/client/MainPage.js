@@ -17,6 +17,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 //import initializeData from '../data/initializeData';
 import APIStatus from './APIStatus';
 import ErrorPage from './ErrorPage';
+import ESPHealthCheck from './ESPHealthCheck';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -70,6 +71,14 @@ if (process.env.REACT_APP_API_SERVER_URL !== "") {
   OBJ_DET_SERVER_URL='http://localhost:8080'
 }
 
+
+
+const offline_color = "#F5F5F5";
+const online_color = "#81C784";
+const default_data = {  status: 'Not detected',
+                        statusColor: '#F5F5F5',
+                      }
+
 const socket = io(OBJ_DET_SERVER_URL,
                   { reconnection: true,
                     reconnectionDelay: 1000,
@@ -78,25 +87,20 @@ const socket = io(OBJ_DET_SERVER_URL,
                   }
 );
 
-const offline_color = "#F5F5F5";
-const online_color = "#81C784";
-const default_data = {  status: 'Not detected',
-                        statusColor: '#F5F5F5',
-                      }
-
-
-
 export default function MainPage() {
   const classes = useStyles();
   const [source, setSource] = useState({});
   const [hasError, setHasError] = useState({"api":false,"esp":false});
+  const [espActive, setESPActive] = useState(false);
   const [clientData, setClientData] = useState({"data":[],"latest_update_time": 0,"previous_update_time": 0});
+
 
 
   useEffect(() => {
 
-    function refreshCards() {
-        if(hasError["esp"]){
+    function pollData() {
+        //console.log(hasError);
+        if(espActive){
           //let newDataRecvd = false;
           let previous_data_recv_time = 0
           //get latest_data_recv_time
@@ -156,25 +160,32 @@ export default function MainPage() {
         }
     }
     let id = setInterval(() => {
-      refreshCards()
-    }, 1500);
+      pollData()
+    }, 150);
     return () => clearInterval(id);
   });
 
+
   //get real time feed from esp
   useEffect(() => {
+
       //console.log('socket effect')
-      socket.on('broadcast', payload => {
-        setSource(payload)
+      socket.on('broadcast', function(data){
+        setSource(data);
+        setESPActive(true)
       });
-      socket.on('disconnect', function() {
+
+      //console.log(socket)
+      socket.on('disconnect', function(){
         setClientData({"data":[]})
-        //console.log('Got disconnect!');
+        setESPActive(false)
       });
-      socket.on('error', error => {
-        //setSource(payload)
-        setHasError({...hasError,"esp": true});
+      socket.on('connect_error', function (data) {
+        //console.log('connection_error');
+        setESPActive(false)
+        //setHasError({...hasError,"esp": true});
       });
+
       return () => {
         socket.off("broadcast");
         socket.off("disconnect");
