@@ -19,14 +19,12 @@ export default function ErrorPage() {
 
   return (
     <div>
-      <Paper className={classes.paper}>
         <Typography variant="h5" component="h3">
           Oops...
         </Typography>
         <Typography component="p">
           Looks like API server is offline..
         </Typography>
-      </Paper>
     </div>
   );
 }

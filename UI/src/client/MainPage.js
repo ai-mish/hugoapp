@@ -20,7 +20,7 @@ import ErrorPage from './ErrorPage';
 //import Refresh from '@material-ui/icons/Refresh';
 
 const useStyles = makeStyles(theme => ({
-    root: {
+    root1: {
       flexGrow: 1,
       margin: 'auto',
       padding: 30,
@@ -29,8 +29,20 @@ const useStyles = makeStyles(theme => ({
       overflow: 'hidden',
       backgroundColor: theme.palette.background.root,
     },
+    root: {
+      color: theme.palette.background.root,
+      backgroundColor: theme.palette.background.root,
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      [theme.breakpoints.up('sm')]: {
+        height: '80vh',
+        minHeight: 750,
+        maxHeight: 1200,
+      },
+    },
     paper: {
-      padding: theme.spacing(1),
+      padding: theme.spacing(3,2),
       margin: 'auto',
       maxWidth: 800,
       backgroundColor: theme.palette.background.root,
@@ -263,6 +275,7 @@ export default function MainPage() {
   const ObjectListResults = () => {
     return (
       <React.Fragment>
+      <Grid container spacing={2} justify="center" >
       {clientData["data"].map(tile => (
         <Grid item>
         <Card className={classes.card} >
@@ -308,6 +321,7 @@ export default function MainPage() {
         </Card>
         </Grid>
     ))}
+    </Grid>
     </React.Fragment>
     );
   }
@@ -317,15 +331,16 @@ export default function MainPage() {
   return (
     <div className={classes.root}>
       <APIStatus/>
+      <Paper className={classes.paper} elevation={0}>
       {
         hasError["api"]
-        ? (<ErrorPage/>)
-        : (<Paper className={classes.paper}>
-                    <Grid container spacing={2} justify="center" >
-                      <ObjectListResults/>
-                    </Grid>
-            </Paper>)
+        ? (
+            <ErrorPage/>)
+        : (
+              <ObjectListResults/>
+            )
       }
+      </Paper>
     </div>
   );
 }
