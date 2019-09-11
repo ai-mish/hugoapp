@@ -1,13 +1,7 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/DeleteSharp';
-
 import IconButton from '@material-ui/core/IconButton';
-import WarningIcon from '@material-ui/icons/Warning';
-
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -51,13 +45,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-
-const variantIcon = {
-  success: CheckCircleIcon,
-  warning: WarningIcon,
-  error: ErrorIcon,
-  info: InfoIcon,
-};
 
 const HealthNotifications = props => {
 
@@ -120,6 +107,7 @@ const HealthNotifications = props => {
           enqueueSnackbar('ESP is online',
                                             { variant: 'success',
                                               persist: false,
+                                              autoHideDuration:1000,
                                               action
                                             });
         } else{
