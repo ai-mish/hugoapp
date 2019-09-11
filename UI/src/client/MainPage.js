@@ -17,6 +17,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 //import initializeData from '../data/initializeData';
 import APIStatus from './APIStatus';
 import ErrorPage from './ErrorPage';
+//import Refresh from '@material-ui/icons/Refresh';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.background.root,
     },
     paper: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(1),
       margin: 'auto',
       maxWidth: 800,
       backgroundColor: theme.palette.background.root,
@@ -47,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     media: {
       margin: 'auto',
       width: 120,
-      height: 120,
+      height: 110,
     },
     avatar: {
       backgroundColor: red[500],
@@ -156,6 +157,7 @@ export default function MainPage() {
                 }
                 return item;
             });
+          setESPActive(false)
           setClientData({...clientData, "data": newClientData});
         }
     }

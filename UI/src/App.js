@@ -4,8 +4,11 @@ import purple from '@material-ui/core/colors/purple';
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
 import yellow from '@material-ui/core/colors/yellow';
-import NavBar from './client/NavBar'
-import MainPage from './client/MainPage'
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import teal from '@material-ui/core/colors/teal';
+import NavBar from './client/NavBar';
+import MainPage from './client/MainPage';
+//import MainPage from './client/MainPage_BG';
 
 const theme = createMuiTheme({
   palette: {
@@ -14,7 +17,7 @@ const theme = createMuiTheme({
     },
     secondary: green,
     background: {
-      root: yellow[700]
+      root: deepPurple[500]
     }
   },
   status: {

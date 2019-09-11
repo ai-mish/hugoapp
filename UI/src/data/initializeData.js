@@ -6,7 +6,7 @@ const initializeData = [
     recommendation:'Not in frame yet'
   },
   {
-    object_key: 'Felix',
+    object_key: 'Ray',
     object_img: '/img/Ray_avatar.png',
     object_name: 'Ray',
     recommendation: 'Not in frame yet',
