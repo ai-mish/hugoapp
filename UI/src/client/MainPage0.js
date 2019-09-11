@@ -18,7 +18,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import APIStatus from './APIStatus';
 import ErrorPage from './ErrorPage';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => {
+
+  return {
     root: {
       flexGrow: 1,
       margin: 'auto',
@@ -32,7 +34,7 @@ const useStyles = makeStyles(theme => ({
       padding: theme.spacing(2),
       margin: 'auto',
       maxWidth: 800,
-      backgroundColor: theme.palette.background.root,
+      backgroundColor: theme.palette.background.paper,
     },
     card: {
       width: 320,
@@ -58,7 +60,8 @@ const useStyles = makeStyles(theme => ({
     snackbarcontent: {
       margin: theme.spacing(1),
     },
-}));
+  };
+});
 
 //const reinitialize_lag_ms = 60000
 const TICK_COUNT=30
