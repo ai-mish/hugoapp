@@ -9,7 +9,9 @@ import MainPage from './client/MainPage'
 
 const theme = createMuiTheme({
   palette: {
-    primary: red,
+    primary: {
+      main: red[500],
+    },
     secondary: green,
     background: {
       root: yellow[700]
