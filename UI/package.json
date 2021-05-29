@@ -14,7 +14,7 @@
     "react-scripts": "3.1.1",
     "socket.io-client": "^2.2.0",
     "uuidv4": "^5.0.1",
-    "ws": "^7.1.2"
+    "ws": "^7.4.6"
   },
   "scripts": {
     "start": "react-scripts start",
